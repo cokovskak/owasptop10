@@ -1,7 +1,9 @@
 package com.example.owasp.config;
 
 
+import com.example.owasp.model.Grade;
 import com.example.owasp.model.User;
+import com.example.owasp.service.GradeService;
 import com.example.owasp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -10,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class DatabaseSeeder implements CommandLineRunner {
-
+    private final GradeService gradeService;
     private final UserService userService;
 
     @Override
@@ -64,6 +66,7 @@ public class DatabaseSeeder implements CommandLineRunner {
                 .active(true)
                 .build();
         userService.createUser(student1);
+        System.out.println("Created student1 with ID: " + student1.getId());
 
         User student2 = User.builder()
                 .username("student2")
@@ -74,6 +77,7 @@ public class DatabaseSeeder implements CommandLineRunner {
                 .active(true)
                 .build();
         userService.createUser(student2);
+        System.out.println("Created student2 with ID: " + student2.getId());
 
         User student3 = User.builder()
                 .username("student3")
@@ -84,7 +88,20 @@ public class DatabaseSeeder implements CommandLineRunner {
                 .active(true)
                 .build();
         userService.createUser(student3);
+        System.out.println("Created student3 with ID: " + student3.getId());
 
-        System.out.println("Database seeded with initial users");
+        Grade mathGrade = Grade.builder()
+                .courseName("Mathematics")
+                .gradeValue("A")
+                .student(student1) // this is a User object created earlier
+                .build();
+        gradeService.saveGrade(mathGrade);
+
+        Grade science = Grade.builder()
+                .courseName("Science")
+                .gradeValue("B")
+                .student(student2) // this is a User object created earlier
+                .build();
+        gradeService.saveGrade(science);
     }
 }

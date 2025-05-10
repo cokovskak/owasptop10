@@ -4,78 +4,342 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Teacher Dashboard</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <style>
+    /* Moodle-specific styles */
+    body {
+      background-color: white;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: #373a3c;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .navbar {
+      background-color: #f8f9fa;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+      padding: 0.5rem 1rem;
+      height: 60px;
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      color: #212529;
+      font-weight: 600;
+      font-size: 18px;
+      text-decoration: none;
+    }
+
+    .navbar-brand img {
+      margin-right: 8px;
+    }
+
+    .user-menu {
+      display: flex;
+      align-items: center;
+    }
+
+    .user-menu .avatar {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      background-color: #e9ecef;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 10px;
+      overflow: hidden;
+      color: #6c757d;
+    }
+
+    .user-name {
+      color: #198754; /* Green color for teachers instead of blue */
+      font-weight: 400;
+      margin-right: 5px;
+    }
+
+    .page-header {
+      margin: 25px 0;
+    }
+
+    .page-header h1 {
+      font-size: 28px;
+      font-weight: 400;
+      color: #373a3c;
+      margin: 0;
+      padding: 0;
+    }
+
+    .breadcrumb {
+      font-size: 13px;
+      padding: 0;
+      margin: 10px 0 0;
+      background-color: transparent;
+    }
+
+    .breadcrumb-item a {
+      color: #198754; /* Green for teachers */
+      text-decoration: none;
+    }
+
+    .breadcrumb-item a:hover {
+      text-decoration: underline;
+    }
+
+    .breadcrumb-item.active {
+      color: #6c757d;
+    }
+
+    .navigation {
+      background-color: #f8f9fa;
+      border: 1px solid rgba(0, 0, 0, 0.125);
+      border-radius: 4px;
+    }
+
+    .navigation h4 {
+      font-size: 16px;
+      padding: 15px;
+      margin: 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    }
+
+    .nav-item {
+      padding: 0;
+    }
+
+    .nav-link {
+      color: #212529;
+      padding: 8px 15px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-link:hover {
+      background-color: #e9ecef;
+    }
+
+    .nav-link.active {
+      background-color: #e9ecef;
+      color: #198754; /* Green for teachers */
+    }
+
+    .nav-link i {
+      margin-right: 8px;
+      width: 16px;
+      text-align: center;
+    }
+
+    .nav-indented {
+      padding-left: 30px;
+    }
+
+    .content-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .content-header h2 {
+      font-size: 24px;
+      font-weight: 400;
+      margin: 0;
+    }
+
+    .dashboard-card {
+      background-color: white;
+      border: 1px solid rgba(0, 0, 0, 0.125);
+      border-radius: 4px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .dashboard-card-header {
+      background-color: #f8f9fa;
+      padding: 15px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+      font-weight: 500;
+    }
+
+    .dashboard-card-body {
+      padding: 15px;
+    }
+
+    .dashboard-btn {
+      background-color: #198754; /* Green for teachers */
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 14px;
+      display: inline-block;
+      margin-top: 10px;
+    }
+
+    .dashboard-btn:hover {
+      background-color: #146c43; /* Darker green on hover */
+      color: white;
+    }
+
+    .moodle-back {
+      color: #198754; /* Green for teachers */
+      text-decoration: none;
+      font-size: 14px;
+      display: inline-block;
+      margin-bottom: 5px;
+    }
+
+    .moodle-back:hover {
+      text-decoration: underline;
+    }
+
+    .moodle-back-icon {
+      margin-right: 5px;
+    }
+
+    .alert-info {
+      background-color: #f8f9fa;
+      border-color: #dee2e6;
+      color: #495057;
+    }
+  </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-success">
-  <div class="container">
-    <a class="navbar-brand" href="#">Teacher Portal</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-          <a class="nav-link active" th:href="@{/teacher/dashboard}">Dashboard</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" th:href="@{/teacher/profile}">My Profile</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" th:href="@{/teacher/students}">Students</a>
-        </li>
-        <li class="nav-item">
-          <form th:action="@{/logout}" method="post">
-            <button type="submit">Logout</button>
-          </form>
-        </li>
-      </ul>
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="container-fluid">
+    <a href="#" class="navbar-brand">
+      <svg width="25" height="25" fill="#198754" viewBox="0 0 24 24">
+        <path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z"></path>
+      </svg>
+      TEACHER PORTAL
+    </a>
+    <span class="user-name" th:text="${user.fullName}"></span>
+
+    <div class="user-menu">
+      <div class="avatar">
+        <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+        </svg>
+      </div>
+      <form th:action="@{/logout}" method="post" class="ms-3">
+        <button type="submit" class="btn btn-sm btn-outline-secondary">Logout</button>
+      </form>
     </div>
   </div>
 </nav>
 
-<div class="container mt-4">
+<div class="container">
+  <div class="mt-4">
+    <a href="#" class="moodle-back">
+      <span class="moodle-back-icon">←</span> Back to home
+    </a>
+  </div>
+
+  <div class="page-header">
+    <h1>Teacher Dashboard</h1>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+      </ol>
+    </nav>
+  </div>
+
   <div class="row">
-    <div class="col-md-12">
-      <div class="card">
-        <div class="card-header">
-          <h4>Teacher Dashboard</h4>
-        </div>
-        <div class="card-body">
-          <h5 class="card-title">Welcome, <span th:text="${user.fullName}"></span>!</h5>
-          <p class="card-text">This is your teacher dashboard. You can manage your courses, assignments, and view student information here.</p>
+    <!-- Navigation Sidebar -->
+    <div class="col-md-3 mb-4">
+      <div class="navigation">
+        <h4>Navigation</h4>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i>▼</i> Home
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link nav-indented active">
+              <i>📊</i> Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a th:href="@{/teacher/profile}" class="nav-link nav-indented">
+              <i>👤</i> My Profile
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link nav-indented">
+              <i>▼</i> Teaching
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link nav-indented" style="padding-left: 60px;">
+              <i>📚</i> My Courses
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link nav-indented" style="padding-left: 60px;">
+              <i>📝</i> Assignments
+            </a>
+          </li>
+          <li class="nav-item">
+            <a th:href="@{/teacher/students}" class="nav-link nav-indented" style="padding-left: 60px;">
+              <i>👥</i> Students
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link nav-indented" style="padding-left: 60px;">
+              <i>📊</i> Grades
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
 
-          <div class="alert alert-info">
-            <strong>Note:</strong> This is a simple demonstration of a teacher dashboard. In a real application, you would be able to manage courses, create assignments, grade students, and more.
+    <!-- Main Content Area -->
+    <div class="col-md-9">
+      <div class="content-header">
+        <h2>Welcome, <span th:text="${user.fullName}"></span>!</h2>
+      </div>
+
+      <div class="alert alert-info">
+        <strong>Note:</strong> This is your teacher dashboard. You can manage your courses, create assignments, grade students, and more.
+      </div>
+
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <div class="dashboard-card">
+            <div class="dashboard-card-header">
+              <i class="folder-icon">📚</i> My Courses
+            </div>
+            <div class="dashboard-card-body">
+              <p>Manage your courses and teaching schedule.</p>
+              <a href="#" class="dashboard-btn">Manage Courses</a>
+            </div>
           </div>
-
-          <div class="row mt-4">
-            <div class="col-md-4">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">My Courses</h5>
-                  <p class="card-text">Manage your courses and teaching schedule.</p>
-                  <a href="#" class="btn btn-success">Manage Courses</a>
-                </div>
-              </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="dashboard-card">
+            <div class="dashboard-card-header">
+              <i class="folder-icon">📝</i> Assignments
             </div>
-            <div class="col-md-4">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Assignments</h5>
-                  <p class="card-text">Create and manage assignments for your courses.</p>
-                  <a href="#" class="btn btn-success">Manage Assignments</a>
-                </div>
-              </div>
+            <div class="dashboard-card-body">
+              <p>Create and manage assignments for your courses.</p>
+              <a href="#" class="dashboard-btn">Manage Assignments</a>
             </div>
-            <div class="col-md-4">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Students</h5>
-                  <p class="card-text">View and manage students in your courses.</p>
-                  <a th:href="@{/teacher/students}" class="btn btn-success">View Students</a>
-                </div>
-              </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="dashboard-card">
+            <div class="dashboard-card-header">
+              <i class="folder-icon">👥</i> Students
+            </div>
+            <div class="dashboard-card-body">
+              <p>View and manage students in your courses.</p>
+              <a th:href="@{/teacher/students}" class="dashboard-btn">View Students</a>
             </div>
           </div>
         </div>

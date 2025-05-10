@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard</title>
+    <title>User report</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <style>
         /* Moodle-specific styles */
@@ -148,62 +148,69 @@
             margin: 0;
         }
 
-        .dashboard-card {
-            background-color: white;
-            border: 1px solid rgba(0, 0, 0, 0.125);
-            border-radius: 4px;
+        .tab-navigation {
             margin-bottom: 20px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            border-bottom: 1px solid #dee2e6;
         }
 
-        .dashboard-card-header {
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.125);
-            font-weight: 500;
-        }
-
-        .dashboard-card-body {
-            padding: 15px;
-        }
-
-        .dashboard-btn {
-            background-color: #0f6cbf;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 4px;
-            text-decoration: none;
-            font-size: 14px;
+        .tab-link {
             display: inline-block;
-            margin-top: 10px;
+            padding: 10px 15px;
+            color: #495057;
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
         }
 
-        .dashboard-btn:hover {
-            background-color: #0d5ca3;
-            color: white;
-        }
-
-        .moodle-back {
+        .tab-link.active {
             color: #0f6cbf;
-            text-decoration: none;
-            font-size: 14px;
-            display: inline-block;
-            margin-bottom: 5px;
+            border-bottom: 2px solid #0f6cbf;
         }
 
-        .moodle-back:hover {
-            text-decoration: underline;
+        .grades-table {
+            width: 100%;
+            margin-bottom: 1rem;
+            border: 1px solid #dee2e6;
         }
 
-        .moodle-back-icon {
+        .grades-table th {
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+            font-weight: 500;
+            padding: 10px 15px;
+            text-align: left;
+            vertical-align: bottom;
+            color: #495057;
+        }
+
+        .grades-table td {
+            padding: 10px 15px;
+            border-bottom: 1px solid #dee2e6;
+            vertical-align: middle;
+        }
+
+        .grades-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .folder-icon {
+            color: #ffc107;
             margin-right: 5px;
         }
 
-        .alert-info {
-            background-color: #f8f9fa;
-            border-color: #dee2e6;
+        .calculator-icon {
+            color: #6c757d;
+            margin-right: 5px;
+        }
+
+        .dropdown-toggle {
+            background-color: white;
+            border: 1px solid #ced4da;
             color: #495057;
+        }
+
+        .dropdown-toggle:focus {
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
         }
     </style>
 </head>
@@ -217,7 +224,7 @@
             </svg>
             COURSES
         </a>
-        <span class="user-name" th:text="${user.fullName}"></span>
+        <span class="user-name" th:text="${username}"></span>
 
         <div class="user-menu">
             <div class="avatar">
@@ -233,18 +240,21 @@
 </nav>
 
 <div class="container">
+    <!-- Page Header -->
     <div class="mt-4">
-        <a href="#" class="moodle-back">
+        <a href="javascript:history.back()" class="moodle-back">
             <span class="moodle-back-icon">←</span> Back
         </a>
     </div>
-
     <div class="page-header">
-        <h1>Student Dashboard</h1>
+        <h1>View: User report  <span th:text="${username}"></span></h1>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                <li class="breadcrumb-item"><a href="#">My courses</a></li>
+                <li class="breadcrumb-item"><a href="#">Grades</a></li>
+                <li class="breadcrumb-item"><a href="#">Grade administration</a></li>
+                <li class="breadcrumb-item active" aria-current="page">User report</li>
             </ol>
         </nav>
     </div>
@@ -261,7 +271,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="/student/dashboard/" class="nav-link nav-indented active">
+                        <a href="#" class="nav-link nav-indented">
                             <i>📊</i> Dashboard
                         </a>
                     </li>
@@ -275,6 +285,7 @@
                             <i>▼</i> My courses
                         </a>
                     </li>
+
                     <li class="nav-item">
                         <a href="#" class="nav-link nav-indented" style="padding-left: 60px;">
                             <i>▶</i> Participants
@@ -286,7 +297,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a th:href="@{/student/{id}/grades(id=${user.id})}" class="nav-link nav-indented" style="padding-left: 60px;">
+                        <a href="#" class="nav-link nav-indented active" style="padding-left: 60px;">
                             <i>📊</i> Grades
                         </a>
                     </li>
@@ -297,48 +308,37 @@
         <!-- Main Content Area -->
         <div class="col-md-9">
             <div class="content-header">
-                <h2>Welcome, <span th:text="${user.fullName}"></span>!</h2>
+                <h2>User report</h2>
+
+                <div class="dropdown">
+                    <button class="btn dropdown-toggle" type="button" id="reportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        User report
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="reportDropdown">
+                        <li><a class="dropdown-item" href="#">User report</a></li>
+                    </ul>
+                </div>
             </div>
 
-            <div class="alert alert-info">
-                <strong>Note:</strong> This is your student dashboard. You can view your courses, assignments, and grades here.
+            <div class="tab-navigation">
+                <a href="#" class="tab-link">Overview report</a>
+                <a href="#" class="tab-link active">User report</a>
             </div>
 
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <div class="dashboard-card">
-                        <div class="dashboard-card-header">
-                            <i class="folder-icon">📚</i> My Courses
-                        </div>
-                        <div class="dashboard-card-body">
-                            <p>View all your enrolled courses.</p>
-                            <a href="#" class="dashboard-btn">View Courses</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="dashboard-card">
-                        <div class="dashboard-card-header">
-                            <i class="folder-icon">📝</i> Assignments
-                        </div>
-                        <div class="dashboard-card-body">
-                            <p>Check your pending and completed assignments.</p>
-                            <a href="#" class="dashboard-btn">View Assignments</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="dashboard-card">
-                        <div class="dashboard-card-header">
-                            <i class="folder-icon">📊</i> My Grades
-                        </div>
-                        <div class="dashboard-card-body">
-                            <p>View your grades for all courses.</p>
-                            <a th:href="@{/student/{id}/grades(id=${user.id})}" class="dashboard-btn">View Grades</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <table class="grades-table">
+                <thead>
+                <tr>
+                    <th>Course name</th>
+                    <th>Letter grade</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="grade : ${grades}">
+                    <td th:text="${grade.courseName}">Course Name</td>
+                    <td th:text="${grade.gradeValue}">-</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

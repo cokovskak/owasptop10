@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 @Data
@@ -35,6 +38,8 @@ public class User {
     private Role role;
 
     private boolean active;
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Grade> grades = new ArrayList<>();
 
     public enum Role {
         ROLE_STUDENT,

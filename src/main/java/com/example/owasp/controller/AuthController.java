@@ -34,10 +34,6 @@ public class AuthController {
         return "register";
     }
 
-    @GetMapping("/logout")
-    public String logout() {
-        return "logout";
-    }
 
 
     @PostMapping("/register")

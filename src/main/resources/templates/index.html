@@ -4,51 +4,390 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        /* Moodle-specific styles */
+        body {
+            background-color: white;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            color: #373a3c;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .navbar {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+            padding: 0.5rem 1rem;
+            height: 60px;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            color: #212529;
+            font-weight: 600;
+            font-size: 18px;
+            text-decoration: none;
+        }
+
+        .navbar-brand img {
+            margin-right: 8px;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-menu .avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+            overflow: hidden;
+            color: #6c757d;
+        }
+
+        .page-header {
+            margin: 25px 0;
+        }
+
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 400;
+            color: #373a3c;
+            margin: 0;
+            padding: 0;
+        }
+
+        .breadcrumb {
+            font-size: 13px;
+            padding: 0;
+            margin: 10px 0 0;
+            background-color: transparent;
+        }
+
+        .breadcrumb-item a {
+            color: #0f6cbf;
+            text-decoration: none;
+        }
+
+        .breadcrumb-item a:hover {
+            text-decoration: underline;
+        }
+
+        .breadcrumb-item.active {
+            color: #6c757d;
+        }
+
+        .navigation {
+            background-color: #f8f9fa;
+            border: 1px solid rgba(0, 0, 0, 0.125);
+            border-radius: 4px;
+        }
+
+        .navigation h4 {
+            font-size: 16px;
+            padding: 15px;
+            margin: 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+        }
+
+        .nav-item {
+            padding: 0;
+        }
+
+        .nav-link {
+            color: #212529;
+            padding: 8px 15px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-link:hover {
+            background-color: #e9ecef;
+        }
+
+        .nav-link.active {
+            background-color: #e9ecef;
+            color: #0f6cbf;
+        }
+
+        .nav-link i {
+            margin-right: 8px;
+            width: 16px;
+            text-align: center;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .content-header h2 {
+            font-size: 24px;
+            font-weight: 400;
+            margin: 0;
+        }
+
+        .dashboard-card {
+            background-color: white;
+            border: 1px solid rgba(0, 0, 0, 0.125);
+            border-radius: 4px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .dashboard-card-header {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+            font-weight: 500;
+        }
+
+        .dashboard-card-body {
+            padding: 15px;
+        }
+
+        .dashboard-btn {
+            background-color: #0f6cbf;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 14px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .dashboard-btn:hover {
+            background-color: #0d5ca3;
+            color: white;
+        }
+
+        .welcome-message {
+            background-color: #f8f9fa;
+            border: 1px solid rgba(0, 0, 0, 0.125);
+            border-radius: 4px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .welcome-message h2 {
+            font-size: 24px;
+            font-weight: 400;
+            margin-bottom: 15px;
+            color: #373a3c;
+        }
+
+        .welcome-message p {
+            margin-bottom: 15px;
+        }
+
+        .login-btn {
+            background-color: #0f6cbf;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 14px;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .login-btn:hover {
+            background-color: #0d5ca3;
+            color: white;
+            text-decoration: none;
+        }
+
+        .register-btn {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 14px;
+            display: inline-block;
+        }
+
+        .register-btn:hover {
+            background-color: #5a6268;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logout-btn {
+            background: none;
+            border: 1px solid #6c757d;
+            color: #6c757d;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background-color: #f8f9fa;
+        }
+
+        .alert-info {
+            background-color: #f8f9fa;
+            border-color: #dee2e6;
+            color: #495057;
+        }
+
+        .features-section {
+            margin-top: 30px;
+        }
+    </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-        <a class="navbar-brand" href="#">School Login System</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link active" th:href="@{/}">Home</a>
-                </li>
-                <li class="nav-item" sec:authorize="isAnonymous()">
-                    <a class="nav-link" th:href="@{/login}">Login</a>
-                </li>
-                <li class="nav-item" sec:authorize="isAnonymous()">
-                    <a class="nav-link" th:href="@{/register}">Register</a>
-                </li>
-                <li class="nav-item" sec:authorize="isAuthenticated()">
-                    <a class="nav-link" th:href="@{/dashboard}">Dashboard</a>
-                </li>
-                <li class="nav-item" sec:authorize="isAuthenticated()">
-                    <form th:action="@{/logout}" method="post">
-                        <button type="submit">Logout</button>
-                    </form>                </li>
-            </ul>
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="container-fluid">
+        <a href="#" class="navbar-brand">
+            <svg width="25" height="25" fill="#0f6cbf" viewBox="0 0 24 24">
+                <path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z"></path>
+            </svg>
+            COURSES
+        </a>
+        <div class="user-menu">
+            <div sec:authorize="isAuthenticated()">
+                <span sec:authentication="name" class="me-2"></span>
+                <div class="avatar">
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                    </svg>
+                </div>
+                <form th:action="@{/logout}" method="post" style="display: inline-block;" class="ms-3">
+                    <button type="submit" class="logout-btn">Logout</button>
+                </form>
+            </div>
+            <div sec:authorize="isAnonymous()">
+                <a th:href="@{/login}" class="me-3 text-decoration-none" style="color: #0f6cbf;">Log in</a>
+            </div>
         </div>
     </div>
 </nav>
 
-<div class="container mt-5">
-    <div class="jumbotron">
-        <h1 class="display-4">Welcome to School Login System</h1>
-        <p class="lead">A simple login system with role-based access control for students, teachers, and administrators.</p>
-        <hr class="my-4">
-        <div sec:authorize="isAnonymous()">
-            <p>Please login or register to access the system.</p>
-            <a class="btn btn-primary btn-lg" th:href="@{/login}" role="button">Login</a>
-            <a class="btn btn-secondary btn-lg" th:href="@{/register}" role="button">Register</a>
+<div class="container">
+    <div class="page-header">
+        <h1>Welcome to Learning Management System</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">Home</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="row">
+        <!-- Navigation Sidebar -->
+        <div class="col-md-3 mb-4">
+            <div class="navigation">
+                <h4>Navigation</h4>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active">
+                            <i>🏠</i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item" sec:authorize="hasAnyRole('ROLE_STUDENT', 'ROLE_TEACHER', 'ROLE_ADMIN')">
+                        <a th:href="@{/dashboard}" class="nav-link">
+                            <i>📊</i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i>ℹ️</i> About
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i>📞</i> Contact
+                        </a>
+                    </li>
+                    <li class="nav-item" sec:authorize="isAnonymous()">
+                        <a th:href="@{/login}" class="nav-link">
+                            <i>🔑</i> Login
+                        </a>
+                    </li>
+                    <li class="nav-item" sec:authorize="isAnonymous()">
+                        <a th:href="@{/register}" class="nav-link">
+                            <i>📝</i> Register
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <div sec:authorize="isAuthenticated()">
-            <p>You are logged in as: <span sec:authentication="name"></span></p>
-            <a class="btn btn-primary btn-lg" th:href="@{/dashboard}" role="button">Go to Dashboard</a>
+
+        <!-- Main Content Area -->
+        <div class="col-md-9">
+            <div class="welcome-message">
+                <h2>Welcome to the Learning Management System</h2>
+                <p>A comprehensive platform for students, teachers, and administrators to manage educational activities and resources.</p>
+
+                <div sec:authorize="isAnonymous()">
+                    <p>Please login or register to access the system.</p>
+                    <a th:href="@{/login}" class="login-btn">Login</a>
+                    <a th:href="@{/register}" class="register-btn">Register</a>
+                </div>
+
+                <div sec:authorize="isAuthenticated()">
+                    <p>You are logged in as: <span sec:authentication="name"></span></p>
+                    <a th:href="@{/dashboard}" class="dashboard-btn">Go to Dashboard</a>
+                </div>
+            </div>
+
+            <div class="alert alert-info">
+                <strong>Note:</strong> This system provides role-based access control for students, teachers, and administrators.
+            </div>
+
+            <div class="features-section">
+                <div class="row">
+                    <div class="col-md-4 mb-4">
+                        <div class="dashboard-card">
+                            <div class="dashboard-card-header">
+                                <i class="folder-icon">👨‍🎓</i> For Students
+                            </div>
+                            <div class="dashboard-card-body">
+                                <p>Access your courses, assignments, and grades.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="dashboard-card">
+                            <div class="dashboard-card-header">
+                                <i class="folder-icon">👨‍🏫</i> For Teachers
+                            </div>
+                            <div class="dashboard-card-body">
+                                <p>Manage courses, create assignments, and grade students.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="dashboard-card">
+                            <div class="dashboard-card-header">
+                                <i class="folder-icon">👨‍💼</i> For Administrators
+                            </div>
+                            <div class="dashboard-card-body">
+                                <p>Oversee system settings, users, and resources.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

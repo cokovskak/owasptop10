@@ -1,20 +1,307 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Central Authentication Service (CAS)</title>
+    <style>
+        /* RESET STYLES */
+        html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+        a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp,
+        small, strike, strong, sub, sup, tt, var, b, u, i, center,
+        dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            font-size: 100%;
+            font: inherit;
+            vertical-align: baseline;
+        }
+        /* HTML5 display-role reset for older browsers */
+        article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+            display: block;
+        }
+        body { line-height: 1; }
+        ol, ul { list-style: none; }
+        blockquote, q { quotes: none; }
+        blockquote:before, blockquote:after,
+        q:before, q:after {
+            content: '';
+            content: none;
+        }
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
+        /* CLEARFIX */
+        #header:after, #content:after, #footer:after, .clearfix:after {
+            content: ".";
+            clear: both;
+            display: block;
+            height: 0;
+            visibility: hidden;
+        }
+
+        /* MAIN STYLES */
+        body {
+            font-family: Candara, Calibri, Arial, Tahoma, Helvetica, sans-serif;
+            color: #666;
+            background: #fbfbfb;
+        }
+
+        h1, h2, h3 {
+            font-family: Candara, Calibri, Arial, Tahoma, Helvetica, sans-serif;
+            padding-top: 10px;
+            padding-bottom: 5px;
+        }
+
+        h1 {
+            font-size: 150%;
+            font-weight: bold;
+        }
+
+        h2 {
+            font-size: 120%;
+            font-weight: bold;
+        }
+
+        h3 {
+            font-size: 110%;
+            font-weight: bold;
+        }
+
+        /* LAYOUT */
+        .fl-screenNavigator-view {
+            min-width: 700px;
+            width: 700px;
+            margin: 2em auto;
+            background-color: #fff;
+            padding: 0px;
+            border-radius: 24px;
+            box-shadow: 2px 2px 24px #000;
+        }
+
+        /* HEADER */
+        #header {
+            background: #d0d1d3;
+            margin: 0px;
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+            position: relative;
+            padding: 0px;
+            height: 80px;
+        }
+
+        /* CONTENT */
+        #content {
+            clear: both;
+            padding: 1px 0;
+            margin: 0px 25px 0px 10px;
+        }
+
+        /* LOGIN FORM */
+        #cas form {
+            display: block;
+            padding: 0;
+            margin-left: 250px;
+        }
+
+        #cas fieldset {
+            border: 0;
+            margin: 0;
+            padding: 0;
+            float: left;
+            clear: none;
+        }
+
+        #cas fieldset legend {
+            display: none;
+        }
+
+        #cas #login {
+            margin-left: 0px;
+            padding-top: 1em;
+            padding-right: 10px;
+            background: url("https://cdn-icons-png.freepik.com/256/15191/15191631.png") no-repeat ;
+            background-size: 190px 190px;
+
+        }
+
+        #cas #login h1 {
+            margin: 0px 0px 0px 250px;
+        }
+
+        #cas #login h2 {
+            font-size: 100%;
+            margin: 0px;
+        }
+
+        #cas #login label {
+            clear: both;
+            width: 120px;
+            margin-right: 8px;
+            margin-top: 7px;
+        }
+
+        #cas #login label span.accesskey {
+            text-decoration: underline;
+        }
+
+        #cas #login input {
+            padding: 4px;
+            border-radius: 4px;
+            background-color: #f0f1f3;
+            border: 0px;
+            margin-top: 5px;
+            width: 268px;
+        }
+
+        #cas #login .check input {
+            padding: 4px;
+            border-radius: 4px;
+            background-color: #f0f1f3;
+            border: 0px;
+            margin-top: 5px;
+            width: 15px;
+            margin-left: -480px;
+        }
+
+        #cas #login .check label {
+            margin-left: 20px;
+            clear: both;
+            width: 450px;
+            margin-right: 8px;
+            margin-top: 3px;
+        }
+
+        #cas #login .btn-row {
+            padding-top: 5px;
+            margin-top: 5px;
+            margin-left: 0px;
+            float: left;
+        }
+
+        #cas #login .btn-submit {
+            float: right;
+            clear: none;
+            display: inline;
+            letter-spacing: 0;
+            padding: 4px;
+            width: 140px;
+            border-radius: 4px;
+            background-color: #b0b0b3;
+            border: 0px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        #cas #login .btn-reset {
+            float: right;
+            padding: 4px;
+            border-radius: 5px;
+            background-color: #f9f9fc;
+            margin-right: 10px;
+            border: 0px;
+            width: 110px;
+        }
+
+        /* SIDEBAR */
+        #cas #sidebar {
+            clear: both;
+            margin-top: 5px;
+            margin-left: 15px;
+            padding: 10px 10px;
+        }
+
+        #cas #sidebar p {
+            margin: 1px 0px 1px 0px;
+            font-size: 90%;
+            text-align: justify;
+            text-justify: newspaper;
+        }
+
+        #cas #sidebar h3 {
+            float: left;
+            margin: 0px 0px 3px 0px;
+            font-size: 90%;
+            padding: 6px 0 3px;
+        }
+
+        #cas #sidebar a {
+            font-size: 90%;
+            margin-left: 5px;
+        }
+
+        /* LANGUAGES */
+        #cas #list-languages ul {
+            margin: 0;
+            padding: 0;
+            line-height: 1.5;
+            list-style: none;
+        }
+
+        #cas #list-languages ul li {
+            display: inline;
+            padding: 0 5px;
+            border-right: 1px solid #ccc;
+        }
+
+        #cas #list-languages ul li.first {
+            padding-left: 0;
+        }
+
+        #cas #list-languages ul li.last {
+            padding-right: 0;
+            border: 0;
+        }
+
+        /* FOOTER */
+        #footer {
+            clear: both;
+            margin: 0px 30px 0px 5px;
+            border-top: 0px dotted #ccc;
+            padding: 0 0 0 0;
+        }
+
+        #footer div#copyright {
+            font-size: 70%;
+            text-align: right;
+        }
+
+        /* ALERTS */
+        .alert {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+
+        .alert-danger {
+            background-color: #FFEFEF;
+            color: #b00;
+            border: 1px solid #ffcaca;
+        }
+
+        .alert-success {
+            background-color: #e8f5e9;
+            color: #060;
+            border: 1px solid #c8e6c9;
+        }
+    </style>
 </head>
-<body>
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="text-center">Login</h3>
-                </div>
-                <div class="card-body">
+<body id="cas" class="fl-theme-iphone">
+<div class="flc-screenNavigator-view-container">
+    <div class="fl-screenNavigator-view">
+        <div id="header" class="flc-screenNavigator-navbar fl-navbar fl-table">
+            <!-- Example: <div style="width: 100px; height: 80px; background: url('/caslogo.png') no-repeat center center; background-size: contain;"></div> -->
+        </div>
+
+        <div id="content" class="fl-screenNavigator-scroll-container">
+            <div class="box fl-panel" id="login">
+                <h1>Central Authentication Service (CAS)</h1>
+
+                <form th:action="@{/login}" method="post" id="fm1" class="fm-v clearfix">
+                    <!-- Alerts -->
                     <div th:if="${param.error}" class="alert alert-danger">
                         Invalid username or password.
                     </div>
@@ -23,28 +310,47 @@
                     </div>
                     <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
 
-                    <form th:action="@{/login}" method="post">
-                        <div class="mb-3">
-                            <label for="username" class="form-label">Username</label>
-                            <input type="text" class="form-control" id="username" name="username" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" required>
-                        </div>
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary">Login</button>
-                        </div>
-                    </form>
+                    <div class="row fl-controls-left">
+                        <label for="username" class="fl-label"><span class="accesskey">U</span>sername:</label>
+                        <input type="text" id="username" name="username" required autocomplete="off">
+                    </div>
+
+                    <div class="row fl-controls-left">
+                        <label for="password" class="fl-label"><span class="accesskey">P</span>assword:</label>
+                        <input type="password" id="password" name="password" required autocomplete="off">
+                    </div>
+
+
+                    <div class="row btn-row">
+                        <input class="btn-submit" name="submit" value="LOGIN" type="submit">
+                        <input class="btn-reset" name="reset" value="CLEAR" type="reset">
+                    </div>
+                </form>
+            </div>
+
+            <div id="sidebar">
+                <p class="fl-panel fl-note fl-bevel-white fl-font-size-80">
+                    For security reasons, please Log Out and Exit your web browser when you are done accessing services that require authentication!
+                </p>
+                <p class="fl-panel fl-note fl-bevel-white fl-font-size-80"><p>For password reset, login problem or technical assistance, visit <a href="http://www.students.finki.ukim.mk" title="Services for Students of the FCSE">Services for Students of the FCSE</a>.</p><p>The Central Authentication Servis enables login to multiple web sites with a single input of your FCSE username and password. After your credentials are checked succesfully, you are given a ticket to use for login to all web sites that CAS. <b>Pay attention: the login pages are not really from finki faculty and are used only for phishing purposes (or deliberately delete browsers privacy settings and session).</b></p><p>This service is to be used only by students and employees of the FCSE. The username for students is the dossier number (students from the FNSM have a dossier number in the form 12345 , and for students from the FEEIT in the form 123410).  </p></p>
+
+                <div id="list-languages" class="fl-panel">
+                    <h3>Languages:</h3>
+                    <ul>
+                        <li class="first"><a href="?locale=en">English</a></li>
+                        <li class="last"><a href="?locale=es">Spanish</a></li>
+                    </ul>
                 </div>
-                <div class="card-footer text-center">
-                    <p>Don't have an account? <a th:href="@{/register}">Register here</a></p>
-                </div>
+            </div>
+        </div>
+
+        <div id="footer" class="fl-panel fl-note fl-bevel-white fl-font-size-80">
+            <div id="copyright">
+                <p>Copyright &copy; 2025 Your Organization.</p>
+                <p>Powered by <a href="#">Central Authentication Service</a></p>
             </div>
         </div>
     </div>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

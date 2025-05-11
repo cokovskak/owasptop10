@@ -295,6 +295,11 @@
               <i>📊</i> Grades
             </a>
           </li>
+          <li class="nav-item">
+            <a th:href="@{/teacher/resource-fetcher}" class="nav-link nav-indented" style="padding-left: 60px;">
+              <i>🔍</i> Resource Fetcher
+            </a>
+          </li>
         </ul>
       </div>
     </div>
@@ -340,6 +345,17 @@
             <div class="dashboard-card-body">
               <p>View and manage students in your courses.</p>
               <a th:href="@{/teacher/students}" class="dashboard-btn">View Students</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="dashboard-card">
+            <div class="dashboard-card-header">
+              <i class="folder-icon">🔍</i> Resource Fetcher
+            </div>
+            <div class="dashboard-card-body">
+              <p>Preview student websites HTML for your courses.</p>
+              <a th:href="@{/teacher/resource-fetcher}" class="dashboard-btn">Fetch Resources</a>
             </div>
           </div>
         </div>

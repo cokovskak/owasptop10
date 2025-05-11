@@ -338,6 +338,24 @@
                         </div>
                     </div>
                 </div>
+                <div class="upload-section">
+                    <form id="uploadForm" th:action="@{/student/upload}" method="post" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="fileUpload" class="form-label">Upload File</label>
+                            <input class="form-control" type="file" id="fileUpload" name="file" required>
+                            <div class="form-text">Check your programming homework if it works.</div>
+                        </div>
+                        <div th:if="${success}" class="alert alert-success">
+                            <span th:text="${success}"></span>
+                        </div>
+                        <div th:if="${output}" class="alert alert-success">
+                            <span th:text="${output}"></span>
+                        </div>
+                        <button type="submit" class="dashboard-btn">Upload Homework</button>
+                    </form>
+                    <br>
+                    <br>
+                </div>
             </div>
         </div>
     </div>

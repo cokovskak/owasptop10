@@ -3,15 +3,19 @@ package com.example.owasp.controller;
 import com.example.owasp.model.User;
 import com.example.owasp.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.ServletWebRequest;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/admin")
@@ -19,6 +23,7 @@ import java.util.List;
 public class AdminController {
 
     private final UserService userService;
+    private final ErrorAttributes errorAttributes;
 
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
@@ -83,4 +88,8 @@ public class AdminController {
         redirectAttributes.addFlashAttribute("success", "User deleted successfully");
         return "redirect:/admin/users";
     }
+
+
+
+
 }

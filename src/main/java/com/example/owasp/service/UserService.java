@@ -30,6 +30,7 @@ public class UserService {
 
     public User createUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        System.out.println("Password in base64: "+user.getPassword());
         user.setActive(true);
         return userRepository.save(user);
     }

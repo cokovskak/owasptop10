@@ -34,14 +34,20 @@ public class TeacherController {
         return "teacher/dashboard";
     }
 
-    @GetMapping("/profile")
-    public String profile(Model model) {
+    @GetMapping("/{id}/profile")
+    public String profile(@PathVariable Long id,Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
         User user = userService.findByUsername(auth.getName()).orElse(null);
 
         model.addAttribute("user", user);
+        model.addAttribute("fullname", userService.findById(id).get().getFullName());
+        model.addAttribute("username", userService.findById(id).get().getUsername());
+        model.addAttribute("email", userService.findById(id).get().getEmail());
+        model.addAttribute("role", userService.findById(id).get().getRole());
         return "teacher/profile";
     }
+
 
     @GetMapping("/students")
     public String viewStudents(Model model) {

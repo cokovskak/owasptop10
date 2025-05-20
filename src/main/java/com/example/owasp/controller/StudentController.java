@@ -37,12 +37,17 @@ public class StudentController {
         return "student/dashboard";
     }
 
-    @GetMapping("/profile")
-    public String profile(Model model) {
+    @GetMapping("/{id}/profile")
+    public String profile(@PathVariable Long id,Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
         User user = userService.findByUsername(auth.getName()).orElse(null);
 
         model.addAttribute("user", user);
+        model.addAttribute("fullname", userService.findById(id).get().getFullName());
+        model.addAttribute("username", userService.findById(id).get().getUsername());
+        model.addAttribute("email", userService.findById(id).get().getEmail());
+        model.addAttribute("role", userService.findById(id).get().getRole());
         return "student/profile";
     }
 
@@ -50,7 +55,7 @@ public class StudentController {
     @GetMapping("/{id}/grades")
     public String showGrades(@PathVariable Long id, Model model) {
         model.addAttribute("grades", gradeService.findGradesByStudent(id));
-        model.addAttribute("username", userService.findById(id).get().getFullName());
+        model.addAttribute("fullname", userService.findById(id).get().getFullName());
 
         return "student/grades";
     }

@@ -30,6 +30,7 @@ public class DatabaseSeeder implements CommandLineRunner {
                 .password("admin123")
                 .fullName("System Administrator")
                 .email("admin@example.com")
+                .securityAnswer("football")
                 .role(User.Role.ROLE_ADMIN)
                 .active(true)
                 .build();
@@ -41,6 +42,7 @@ public class DatabaseSeeder implements CommandLineRunner {
                 .password("teacher123")
                 .fullName("John Smith")
                 .email("john.smith@example.com")
+                .securityAnswer("handball")
                 .role(User.Role.ROLE_TEACHER)
                 .active(true)
                 .build();
@@ -51,6 +53,7 @@ public class DatabaseSeeder implements CommandLineRunner {
                 .password("teacher123")
                 .fullName("Emily Johnson")
                 .email("emily.johnson@example.com")
+                .securityAnswer("basketball")
                 .role(User.Role.ROLE_TEACHER)
                 .active(true)
                 .build();
@@ -62,6 +65,7 @@ public class DatabaseSeeder implements CommandLineRunner {
                 .password("student123")
                 .fullName("Alex Brown")
                 .email("alex.brown@example.com")
+                .securityAnswer("basketball")
                 .role(User.Role.ROLE_STUDENT)
                 .active(true)
                 .build();
@@ -73,6 +77,7 @@ public class DatabaseSeeder implements CommandLineRunner {
                 .password("student123")
                 .fullName("Maria Garcia")
                 .email("maria.garcia@example.com")
+                .securityAnswer("hiking")
                 .role(User.Role.ROLE_STUDENT)
                 .active(true)
                 .build();
@@ -84,6 +89,7 @@ public class DatabaseSeeder implements CommandLineRunner {
                 .password("student123")
                 .fullName("James Wilson")
                 .email("james.wilson@example.com")
+                .securityAnswer("climbing")
                 .role(User.Role.ROLE_STUDENT)
                 .active(true)
                 .build();

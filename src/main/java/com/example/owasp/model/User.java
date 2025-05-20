@@ -44,6 +44,7 @@ public class User {
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Grade> grades = new ArrayList<>();
 
+
     public enum Role {
         ROLE_STUDENT,
         ROLE_TEACHER,

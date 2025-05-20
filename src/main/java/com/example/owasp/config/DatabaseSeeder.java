@@ -1,8 +1,10 @@
 package com.example.owasp.config;
 
 
+import com.example.owasp.model.Feedback;
 import com.example.owasp.model.Grade;
 import com.example.owasp.model.User;
+import com.example.owasp.service.FeedbackService;
 import com.example.owasp.service.GradeService;
 import com.example.owasp.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Component;
 public class DatabaseSeeder implements CommandLineRunner {
     private final GradeService gradeService;
     private final UserService userService;
+    private final FeedbackService FeedbackService;
 
     @Override
     public void run(String... args) {
@@ -109,5 +112,12 @@ public class DatabaseSeeder implements CommandLineRunner {
                 .student(student2) // this is a User object created earlier
                 .build();
         gradeService.saveGrade(science);
+
+        Feedback feedback= Feedback.builder()
+                .username(student3.getUsername())
+                .message("best univesity")
+                .build();
+
+        FeedbackService.saveFeedback(feedback);
     }
 }

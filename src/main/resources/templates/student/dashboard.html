@@ -298,6 +298,11 @@
             <div class="content-header">
                 <h2>Welcome, <span th:text="${user.fullName}"></span>!</h2>
             </div>
+            <div class="alert alert-info" role="alert" style="margin-bottom: 20px;">
+                We would be grateful if you can fill this feedback form for the university.
+                <a th:href="@{/feedback/showfeedback}" class="btn btn-primary btn-sm ms-3">>Go to Feedback Form</a>
+
+            </div>
 
             <div class="alert alert-info">
                 <strong>Note:</strong> This is your student dashboard. You can view your courses, assignments, and grades here.

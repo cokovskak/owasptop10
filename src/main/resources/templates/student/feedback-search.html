@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Search Feedback - University</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            background-color: white;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            color: #373a3c;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .navbar {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+            padding: 0.5rem 1rem;
+            height: 60px;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            color: #212529;
+            font-weight: 600;
+            font-size: 18px;
+            text-decoration: none;
+        }
+
+        .navbar-brand img {
+            margin-right: 8px;
+        }
+
+        /* Form container spacing */
+        .feedback-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            border: 1px solid #dee2e6;
+            border-radius: 0.375rem;
+            background-color: #fefefe;
+            box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 0.075);
+        }
+
+        /* Heading style */
+        .feedback-container h1 {
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #0f6cbf;
+        }
+
+        /* Label style */
+        label {
+            font-weight: 500;
+        }
+
+        /* Input styling */
+        .form-control {
+            font-family: inherit;
+            font-size: 1rem;
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            border: 1px solid #ced4da;
+        }
+
+        /* Submit button */
+        .btn-submit {
+            background-color: #0f6cbf;
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.375rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            background-color: #094a7d;
+        }
+
+        /* Success message */
+        .success-message {
+            color: green;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            padding: 0.75rem;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 0.375rem;
+        }
+
+        /* Error message */
+        .error-message {
+            color: #dc3545;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            padding: 0.75rem;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 0.375rem;
+        }
+
+        /* Results table styling */
+        .results-table {
+            margin-top: 2rem;
+        }
+
+        .results-table h3 {
+            color: #0f6cbf;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .table {
+            border: 1px solid #dee2e6;
+            border-radius: 0.375rem;
+            overflow: hidden;
+        }
+
+        .table th {
+            background-color: #0f6cbf;
+            color: white;
+            font-weight: 600;
+            border: none;
+            padding: 0.75rem;
+        }
+
+        .table td {
+            padding: 0.75rem;
+            border-top: 1px solid #dee2e6;
+            vertical-align: top;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* User menu styling */
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-name {
+            font-weight: 500;
+            margin-right: 1rem;
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+        }
+
+        .btn-outline-secondary {
+            border-color: #6c757d;
+            color: #6c757d;
+        }
+
+        .btn-outline-secondary:hover {
+            background-color: #6c757d;
+            border-color: #6c757d;
+            color: white;
+        }
+
+        /* Search section styling */
+        .search-section {
+            background-color: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 0.375rem;
+            margin-bottom: 2rem;
+            border: 1px solid #dee2e6;
+        }
+
+        .search-section h2 {
+            color: #0f6cbf;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+    </style>
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="container-fluid">
+        <a href="#" class="navbar-brand">
+            <svg width="25" height="25" fill="#0f6cbf" viewBox="0 0 24 24">
+                <path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z"></path>
+            </svg>
+            COURSES
+        </a>
+        <span class="user-name" th:text="${user != null ? user.fullName : 'Guest'}">Guest User</span>
+
+        <div class="user-menu d-flex align-items-center gap-3">
+            <a th:href="@{/student/{id}/profile(id=${user != null ? user.id : 1})}">
+                <div class="avatar" style="cursor: pointer;">
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                    </svg>
+                </div>
+            </a>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="btn btn-sm btn-outline-secondary">Logout</button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div class="container feedback-container">
+    <h1>Search Feedback</h1>
+
+    <div class="search-section">
+        <h2>Search Feedback Messages</h2>
+        <form method="post" th:action="@{/feedback/search}">
+            <div class="mb-3">
+                <label for="searchTerm" class="form-label">Search Term:</label>
+                <input type="text" id="searchTerm" name="searchTerm" class="form-control"
+                       th:value="${searchTerm}" placeholder="Enter search term..." />
+            </div>
+            <button type="submit" class="btn btn-submit">Search</button>
+        </form>
+    </div>
+
+    <div th:if="${error}" class="error-message">
+        <p th:text="${error}">Error message will appear here</p>
+    </div>
+
+    <div th:if="${bravo}" class="success-message">
+        <p th:text="${bravo}">Success message will appear here</p>
+    </div>
+
+    <div th:if="${results}" class="results-table">
+        <h3>Search Results:</h3>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Message</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="feedback : ${results}">
+                    <td th:text="${feedback.id}">1</td>
+                    <td th:text="${feedback.username}">username</td>
+                    <td th:text="${feedback.message}">feedback message</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="text-muted mt-2">
+            <small th:text="'Found ' + ${#lists.size(results)} + ' result(s)'">Found X result(s)</small>
+        </p>
+    </div>
+
+    <div class="mt-4">
+        <a th:href="@{/feedback/showfeedback}" class="btn btn-outline-secondary">
+            ← Back to Feedback Form
+        </a>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

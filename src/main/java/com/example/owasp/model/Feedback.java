@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "feedbacks")
+@Table(name = "feedback")
 @Data
 @Builder
 @NoArgsConstructor

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
+import com.example.owasp.model.Grade;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -34,6 +34,7 @@ public class StudentController {
         User user = userService.findByUsername(auth.getName()).orElse(null);
 
         model.addAttribute("user", user);
+
         return "student/dashboard";
     }
 
@@ -54,9 +55,12 @@ public class StudentController {
 
     @GetMapping("/{id}/grades")
     public String showGrades(@PathVariable Long id, Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByUsername(auth.getName()).orElse(null);
         model.addAttribute("grades", gradeService.findGradesByStudent(id));
+        model.addAttribute("user", user);
         model.addAttribute("fullname", userService.findById(id).get().getFullName());
-
+        model.addAttribute("username", userService.findById(id).get().getFullName());
         return "student/grades";
     }
 
